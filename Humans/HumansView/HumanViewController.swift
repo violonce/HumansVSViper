@@ -44,19 +44,19 @@ class HumanViewController: UIViewController, HumanViewProtocol {
     }
     
     func showHUD() {
-        DispatchQueue.main.async {
-            self.view.bringSubviewToFront(self.HUDView)
-            self.activityIndicator.alpha = 1
-            UIView.animate(withDuration: 0.5) {
-                self.HUDView.alpha = 1
+        DispatchQueue.main.async { [weak self] in
+            self!.view.bringSubviewToFront(self!.HUDView)
+            self!.activityIndicator.alpha = 1
+            UIView.animate(withDuration: 0.5) { [weak self] in
+                self!.HUDView.alpha = 1
             }
         }
     }
     
     func hideHUD() {
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.5) {
-                self.HUDView.alpha = 0
+        DispatchQueue.main.async { [weak self] in
+            UIView.animate(withDuration: 0.5) { [weak self] in
+                self!.HUDView.alpha = 0
             }
         }
     }
