@@ -7,47 +7,45 @@
 
 import Foundation
 
-class HumanInteractor: HumanInteractorProtocol {
+class HumanInteractor: HumanInteractorProtocolInput {
     
-    var firstHuman: HumanProtocol
-    {
-        get {
-            return HumanCreator.init(
-                gender: "M"
-            ).humanType.init(
-                name: "Il",
-                surname: "Fed",
-                height: 177,
-                weight: 70
-            )
-        }
-    }
-    var secondHuman: HumanProtocol {
-        get {
-            return HumanCreator.init(
-                gender: "W"
-            ).humanType.init(
-                name: "Ila",
-                surname: "Feda",
-                height: 150,
-                weight: 45
-            )
-        }
-    }
+    private var firstHuman: HumanProtocol!
+    private var secondHuman: HumanProtocol!
+    private var resultHuman: HumanProtocol!
     
-    var resultHuman: HumanProtocol = EmptyHuman(name: "", surname: "", height: 0, weight: 0)
-    
-    weak var presenter: HumanPresenterProtocol!
+    weak var output: HumanInteractorProtocolOutput!
 
-    required init(presenter: HumanPresenterProtocol) {
-        self.presenter = presenter
+    required init(output: HumanInteractorProtocolOutput) {
+        self.output = output
+    }
+    
+    // MARK: - HumanInteractorProtocolInput methods
+    
+    func generateInitialHumans() {
+        //if work with network, here must be download data from server
+        firstHuman = HumanCreator.init(
+            gender: "M"
+        ).humanType.init(
+            name: "Il",
+            surname: "Fed",
+            height: 177,
+            weight: 70
+        )
+        secondHuman = HumanCreator.init(
+            gender: "W"
+        ).humanType.init(
+            name: "Ila",
+            surname: "Feda",
+            height: 150,
+            weight: 45
+        )
+        self.output.initialGenegateDidEnd(firstHuman: firstHuman, secondHuman: secondHuman)
     }
     
     func compatibilityTest() {
+        self.output.loadingDidBegan()
         resultHuman = firstHuman.beInRelationship(human: secondHuman)
-    }
-    
-    func getResultHuman() -> HumanProtocol {
-        return resultHuman
+        self.output.compatibilityTestDidEnd(resultHuman: resultHuman)
+        self.output.loadingDidEnded()
     }
 }

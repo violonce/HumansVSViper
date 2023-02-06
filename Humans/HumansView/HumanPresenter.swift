@@ -7,40 +7,49 @@
 
 import Foundation
 
-class HumanPresenter: HumanPresenterProtocol {
+class HumanPresenter: HumanViewProtocolOutput, HumanInteractorProtocolOutput {
 
-    weak var view: HumanViewProtocol!
-    var interactor: HumanInteractorProtocol!
-    var router: HumanRouterProtocol!
+    weak var view: HumanViewProtocolInput!
+    var interactor: HumanInteractorProtocolInput!
+    var router: HumanRouterProtocolInput!
     
-    required init(view: HumanViewProtocol) {
+    required init(view: HumanViewProtocolInput) {
         self.view = view
     }
     
-    // MARK: - MainPresenterProtocol methods
+    // MARK: - HumanViewProtocolOutput methods
     
     func configureView() {
-        view.setFirstHumanValue(with: interactor.firstHuman.fullInfo())
-        view.setSecondHumanValue(with: interactor.secondHuman.fullInfo())
-        genegateResult()
-    }
-    
-    func showHUD() {
-        view.showHUD()
-    }
-    
-    func hideHUD() {
-        view.hideHUD()
+        interactor.generateInitialHumans()
+        interactor.compatibilityTest()
     }
     
     func repeatButtonClicked() {
         genegateResult()
     }
     
-    private func genegateResult() {
+    // MARK: - HumanInteractorProtocolOutput methods
+    
+    func loadingDidBegan () {
         view.showHUD()
-        interactor.compatibilityTest()
+    }
+    
+    func loadingDidEnded() {
         view.hideHUD()
-        view.setResultHumanValue(with: interactor.resultHuman.fullInfo())
+    }
+    
+    func compatibilityTestDidEnd(resultHuman: HumanProtocol) {
+        view.setResultHumanValue(with: resultHuman.fullInfo())
+    }
+    
+    func initialGenegateDidEnd(firstHuman: HumanProtocol, secondHuman: HumanProtocol) {
+        view.setFirstHumanValue(with: firstHuman.fullInfo())
+        view.setSecondHumanValue(with: secondHuman.fullInfo())
+    }
+    
+    // MARK: - private methods
+    
+    private func genegateResult() {
+        interactor.compatibilityTest()
     }
 }

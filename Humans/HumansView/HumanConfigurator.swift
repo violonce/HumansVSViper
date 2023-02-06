@@ -7,14 +7,14 @@
 
 import Foundation
 
-class HumanConfigurator: HumanConfiguratorProtocol {
+class HumanConfigurator: HumanConfiguratorProtocolInput {
     
     func configure(with viewController: HumanViewController) {
         let presenter = HumanPresenter(view: viewController)
-        let interactor = HumanInteractor(presenter: presenter)
+        let interactor = HumanInteractor(output: presenter)
         let router = HumanRouter(viewController: viewController)
         
-        viewController.presenter = presenter
+        viewController.viewOutput = presenter
         presenter.interactor = interactor
         presenter.router = router
     }

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-protocol HumanViewProtocol: AnyObject {
+protocol HumanViewProtocolInput: AnyObject {
     func setFirstHumanValue(with value: String?)
     func setSecondHumanValue(with value: String?)
     func setResultHumanValue(with value: String?)
@@ -16,27 +16,26 @@ protocol HumanViewProtocol: AnyObject {
     func hideHUD()
 }
 
-protocol HumanPresenterProtocol: AnyObject {
-    var router: HumanRouterProtocol! { set get }
-    
+protocol HumanViewProtocolOutput: AnyObject {
     func configureView()
-    func showHUD()
-    func hideHUD()
     func repeatButtonClicked()
 }
 
-protocol HumanInteractorProtocol: AnyObject {
-    var firstHuman : HumanProtocol { get }
-    var secondHuman : HumanProtocol { get }
-    var resultHuman : HumanProtocol { set get }
-    func getResultHuman() -> HumanProtocol
+protocol HumanInteractorProtocolInput: AnyObject {
+    func generateInitialHumans()
     func compatibilityTest()
 }
 
-protocol HumanRouterProtocol: AnyObject {
-
+protocol HumanInteractorProtocolOutput: AnyObject {
+    func loadingDidBegan()
+    func loadingDidEnded()
+    func initialGenegateDidEnd(firstHuman: HumanProtocol, secondHuman: HumanProtocol)
+    func compatibilityTestDidEnd(resultHuman: HumanProtocol)
 }
 
-protocol HumanConfiguratorProtocol: AnyObject {
+protocol HumanRouterProtocolInput: AnyObject {
+}
+
+protocol HumanConfiguratorProtocolInput: AnyObject {
     func configure(with viewController: HumanViewController)
 }

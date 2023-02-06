@@ -8,7 +8,7 @@
 import UIKit
 
 
-class HumanViewController: UIViewController, HumanViewProtocol {
+class HumanViewController: UIViewController, HumanViewProtocolInput {
     
     @IBOutlet private weak var humanFirst: UILabel!
     @IBOutlet private weak var humanSecond: UILabel!
@@ -18,14 +18,16 @@ class HumanViewController: UIViewController, HumanViewProtocol {
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     
-    var presenter: HumanPresenterProtocol!
-    var configurator: HumanConfiguratorProtocol = HumanConfigurator()
+    var viewOutput: HumanViewProtocolOutput!
+    var configurator: HumanConfiguratorProtocolInput = HumanConfigurator()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configurator.configure(with: self)
-        presenter.configureView()
+        viewOutput.configureView()
     }
+    
+    // MARK: - HumanViewProtocolInput methods
     
     func setFirstHumanValue(with value: String?) {
         humanFirst.text = value
@@ -37,10 +39,6 @@ class HumanViewController: UIViewController, HumanViewProtocol {
     
     func setResultHumanValue(with value: String?) {
         resultLabel.text = value
-    }
-    
-    @IBAction func repeatButtonAction(_ sender: Any) {
-        presenter.repeatButtonClicked()
     }
     
     func showHUD() {
@@ -59,6 +57,12 @@ class HumanViewController: UIViewController, HumanViewProtocol {
                 self!.HUDView.alpha = 0
             }
         }
+    }
+    
+    // MARK: - actions methods
+    
+    @IBAction func repeatButtonAction(_ sender: Any) {
+        viewOutput.repeatButtonClicked()
     }
 
 }

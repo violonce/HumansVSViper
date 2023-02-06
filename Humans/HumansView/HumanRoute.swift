@@ -7,7 +7,7 @@
 
 import Foundation
 
-class HumanRouter: HumanRouterProtocol {
+class HumanRouter: HumanRouterProtocolInput {
     
     weak var viewController: HumanViewController!
     
